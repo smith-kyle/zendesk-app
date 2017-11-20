@@ -1,0 +1,17 @@
+{
+  "author": {
+    "email": "dev@hashback.io",
+    "name": "Hashback"
+  },
+  "defaultLocale": "en",
+  "frameworkVersion": "2.0",
+  "name": "Hashback",
+  "location": {
+    "support": {
+      "nav_bar": "assets/iframe.html",
+    }
+  },
+  "private": true,
+  "singleInstall": true,
+  "version": "1.0"
+}
