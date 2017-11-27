@@ -5,7 +5,7 @@
       "method": "post",
       "target_url": "https://api.hashback.io/feedback/zendesk?token={{setting.token}}",
       "title": "Hashback Analysis Target",
-      "type": "http_target",
+      "type": "http_target"
     }
   },
   "ticket_fields": {
@@ -22,7 +22,7 @@
         {
           "name": "neutral",
           "title": "Neutral"
-        },
+        }
       ],
       "title": "Hashback Sentiment",
       "type": "tagger"
@@ -33,11 +33,14 @@
       "actions": [
         {
           "field": "notification_target",
-          "value": ["hashback_analysis_target", "{\"description\":\"{{ticket.description}}\",\"title\":\"{{ticket.title}}\",\"ticketId\":\"{{ticket.id}}\",\"user\":{\"email\":\"{{ticket.requester.email}}\",\"id\":\"{{ticket.requester.id}}\",\"name\":\"{{ticket.requester.name}}\"}}"]
+          "value": [
+            "hashback_analysis_target",
+            "{\"description\":\"{{ticket.description}}\",\"title\":\"{{ticket.title}}\",\"ticketId\":\"{{ticket.id}}\",\"user\":{\"email\":\"{{ticket.requester.email}}\",\"id\":\"{{ticket.requester.id}}\",\"name\":\"{{ticket.requester.name}}\"}}"
+          ]
         }
       ],
       "all": [
-        { "field": "status", "operator": "is", "value": "new" },
+        { "field": "status", "operator": "is", "value": "new" }
       ],
       "title": "Analyze created ticket with Hashback"
     }

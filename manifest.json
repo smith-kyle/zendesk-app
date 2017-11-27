@@ -9,7 +9,7 @@
   "name": "Hashback",
   "location": {
     "support": {
-      "nav_bar": "assets/iframe.html",
+      "nav_bar": "assets/iframe.html"
     }
   },
   "parameters": [
@@ -18,7 +18,7 @@
       "required": false,
       "secure": true,
       "type": "hidden"
-    },
+    }
   ],
   "private": true,
   "singleInstall": true,
