@@ -4,6 +4,7 @@
     "name": "Hashback"
   },
   "defaultLocale": "en",
+  "domainWhitelist": ["api.hashback.io", "staging-api.hashback.io"],
   "frameworkVersion": "2.0",
   "name": "Hashback",
   "location": {
@@ -11,6 +12,14 @@
       "nav_bar": "assets/iframe.html",
     }
   },
+  "parameters": [
+    {
+      "name": "token",
+      "required": false,
+      "secure": true,
+      "type": "hidden"
+    },
+  ],
   "private": true,
   "singleInstall": true,
   "version": "1.0"
