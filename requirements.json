@@ -12,16 +12,16 @@
     "hashback_sentiment": {
       "custom_field_options": [
         {
-          "name": "positive",
-          "title": "Positive"
+          "name": "Positive",
+          "value": "positive"
         },
         {
-          "name": "negative",
-          "title": "Negative"
+          "name": "Negative",
+          "value": "negative"
         },
         {
-          "name": "neutral",
-          "title": "Neutral"
+          "name": "Neutral",
+          "value": "neutral"
         }
       ],
       "title": "Hashback Sentiment",
@@ -35,7 +35,7 @@
           "field": "notification_target",
           "value": [
             "hashback_analysis_target",
-            "{\"description\":\"{{ticket.description}}\",\"title\":\"{{ticket.title}}\",\"ticketId\":\"{{ticket.id}}\",\"user\":{\"email\":\"{{ticket.requester.email}}\",\"id\":\"{{ticket.requester.id}}\",\"name\":\"{{ticket.requester.name}}\"}}"
+            "{\n\t\"description\":\"{{ticket.description}}\",\n\t\"title\":\"{{ticket.title}}\",\n\t\"ticketId\":\"{{ticket.id}}\",\n\t\"user\":{\n\t\t\"email\":\"{{ticket.requester.email}}\",\n\t\t\"id\":\"{{ticket.requester.id}}\",\n\t\t\"name\":\"{{ticket.requester.name}}\"\n\t}\n}"
           ]
         }
       ],
