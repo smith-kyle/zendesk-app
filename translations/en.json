@@ -3,6 +3,12 @@
     "installation_instructions": "Install the app from the Zendesk marketplace. Then click on the icon in the left nav bar to finish the installation.",
     "long_description": "Use deep learning from Hashback to automate classifying new tickets. With a system that gets smarter the more you use it, you can automate priorizing, tagging, and determining type and sentiment for all newly created tickets.",
     "name": "Hashback",
+    "parameters": {
+      "token": {
+        "helpText": "API Token for your Hashback account. This is set automatically for you and shouldn't need to be changed.",
+        "label": "Hashback API Token"
+      }
+    },
     "short_description": "Use deep learning to automate analyzing new tickets"
   }
 }
