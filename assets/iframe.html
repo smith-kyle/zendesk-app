@@ -31,7 +31,7 @@
         Click the below button to finish the setup for your Hashback account.
       </p>
       <div class="my-20 l-btn-group">
-        <a class="c-btn c-btn--medium c-btn--primary" href="https://app.hashback.io" role="button" target="_top">
+        <a class="c-btn c-btn--medium c-btn--primary" id="configure-button" role="button" target="_top">
           Configure Hashback
         </a>
       </div>
@@ -99,6 +99,14 @@
     }
 
     client.on('app.registered', function() {
+      document.getElementById('configure-button').onclick = function() {
+        getSubdomain()
+          .then(function(subdomain) {
+            window.location.href
+              = 'https://app.hashback.io/settings/zendesk/' + subdomain;
+          });
+      }
+
       getIsCorrectlyConfigured()
         .then(function(isCorrectlyConfigured) {
           var loadingSection = document.querySelector('section[data-loading]');
