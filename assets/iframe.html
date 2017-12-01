@@ -78,7 +78,7 @@
 
     function getHashbackStatus() {
       return client.request({
-        url: 'https://api.hashback.io/feedback/zenDesk/status?token={{setting.token}}',
+        url: 'https://api.hashback.io/feedback/zendesk/status?token={{setting.token}}',
         secure: true,
         type: 'GET'
       })
