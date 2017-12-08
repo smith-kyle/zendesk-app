@@ -17,10 +17,10 @@
       "name": "token",
       "required": false,
       "secure": true,
-      "type": "text"
+      "type": "hidden"
     }
   ],
-  "private": true,
+  "private": false,
   "singleInstall": true,
   "version": "1.0"
 }
