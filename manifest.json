@@ -1,7 +1,8 @@
 {
   "author": {
     "email": "dev@hashback.io",
-    "name": "Hashback"
+    "name": "Hashback",
+    "url": "https://www.hashback.io"
   },
   "defaultLocale": "en",
   "domainWhitelist": ["api.hashback.io", "staging-api.hashback.io"],
