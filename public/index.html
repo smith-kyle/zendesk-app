@@ -1,5 +1,10 @@
 <html>
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="theme-color" content="#000000">
+  <link rel="manifest" href="%PUBLIC_URL%/app-manifest.json">
+  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
   <link rel="stylesheet" href="https://assets.zendesk.com/apps/sdk-assets/css/2/zendesk_garden.css" type="text/css">
   <style>
   body {
@@ -13,8 +18,16 @@
     margin: 20px 0;
   }
   </style>
+  <title>Hashback Zendesk Integration</title>
 </head>
 <body>
+  <noscript>
+    You need to enable JavaScript to run this app.
+  </noscript>
+  <!-- https://github.com/zendesk/zendesk_app_framework_sdk -->
+  <div id="root"></div>
+  <script type="text/javascript" src="https://assets.zendesk.com/apps/sdk/2.0/zaf_sdk.js"></script>
+  <!--
   <section data-loading class="">Loading...</section>
   <section setup-good class="hidden">
     <div class="c-callout c-callout--success">
@@ -37,10 +50,6 @@
       </div>
     </div>
   </section>
-  <!-- https://github.com/zendesk/zendesk_app_framework_sdk -->
-  <script type="text/javascript" src="https://assets.zendesk.com/apps/sdk/2.0/zaf_sdk.js"></script>
-  <!-- Polyfill promise if needed -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/bluebird/3.5.0/bluebird.min.js"></script>
   <script>
     // Initialise the Zendesk JavaScript API client
     // https://developer.zendesk.com/apps/docs/apps-v2
@@ -123,5 +132,6 @@
         });
     });
   </script>
+  -->
 </body>
 </html>
