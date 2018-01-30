@@ -6,6 +6,7 @@
   "bs-dependencies": [
     "bs-jest",
     "@glennsl/bs-json",
+    "rationale",
     "reason-react"
   ],
   "reason": {
