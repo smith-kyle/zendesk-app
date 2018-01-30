@@ -69,7 +69,8 @@ type zafClient;
 
 [@bs.scope "ZAFClient"] [@bs.val] external init : unit => zafClient = "";
 
-[@bs.send] external context : zafClient => Js.Promise.t(context) = "";
+[@bs.send]
+external requestContext : zafClient => Js.Promise.t(Js.Json.t) = "context";
 
 [@bs.send]
 external request :
@@ -89,3 +90,36 @@ external request :
 external on_app_registered :
   (zafClient, [@bs.as "app.registered"] _, unit => unit) => unit =
   "on";
+
+let getContext = zafClient =>
+  Js.Promise.(
+    requestContext(zafClient)
+    |> then_(json => json |> Decode.context |> resolve)
+  );
+
+let accountLens =
+  Rationale.Lens.(
+    make(
+      context => context.account,
+      (account, context) => {...context, account}
+    )
+    >>- optional({subdomain: None})
+  );
+
+let subdomainLens =
+  Rationale.Lens.(
+    make(
+      account => account.subdomain,
+      (subdomain, account) => {...account, subdomain}
+    )
+  );
+
+let getSubdomain = zafClient =>
+  Js.Promise.(
+    getContext(zafClient)
+    |> then_(context =>
+         context
+         |> Rationale.Lens.(view(accountLens >>- subdomainLens))
+         |> resolve
+       )
+  );
