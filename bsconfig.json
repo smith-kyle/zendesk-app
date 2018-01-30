@@ -4,8 +4,9 @@
     "src"
   ],
   "bs-dependencies": [
-    "reason-react",
-    "bs-jest"
+    "bs-jest",
+    "@glennsl/bs-json",
+    "reason-react"
   ],
   "reason": {
     "react-jsx": 2
