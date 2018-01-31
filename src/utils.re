@@ -4,44 +4,29 @@ type guid =
 type url =
   | Url(string);
 
-type requestMethod =
-  | Connect
-  | Delete
-  | Get
-  | Head
-  | Options
-  | Patch
-  | Post
-  | Put
-  | Trace;
+[@bs.deriving jsConverter]
+type requestMethod = [
+  | [@bs.as "CONNECT"] `Connect
+  | [@bs.as "DELETE"] `Delete
+  | [@bs.as "GET"] `Get
+  | [@bs.as "HEAD"] `Head
+  | [@bs.as "OPTIONS"] `Options
+  | [@bs.as "PATCH"] `Patch
+  | [@bs.as "POST"] `Post
+  | [@bs.as "PUT"] `Put
+  | [@bs.as "TRACE"] `Trace
+];
 
 let createGuid = guidString => Guid(guidString);
 
-let createUrl = urlString => Url(urlString);
-
-let encodeRequestMethod = verbType =>
-  switch verbType {
-  | Connect => "CONNECT"
-  | Delete => "DELETE"
-  | Get => "GET"
-  | Head => "HEAD"
-  | Options => "OPTIONS"
-  | Patch => "PATCH"
-  | Post => "POST"
-  | Put => "PUT"
-  | Trace => "TRACE"
+let guidToString = guid =>
+  switch guid {
+  | Guid(guidString) => guidString
   };
 
-let decodeRequestMethod = verbString =>
-  switch verbString {
-  | "CONNECT" => Connect
-  | "DELETE" => Delete
-  | "GET" => Get
-  | "HEAD" => Head
-  | "OPTIONS" => Options
-  | "PATCH" => Patch
-  | "POST" => Post
-  | "PUT" => Put
-  | "TRACE" => Trace
-  | e => raise(Failure("Unknown requestMethod: " ++ e))
+let createUrl = urlString => Url(urlString);
+
+let urlToString = url =>
+  switch url {
+  | Url(urlString) => urlString
   };

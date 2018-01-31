@@ -14,6 +14,7 @@ type location =
   | UserSidebar;
 
 type subdomain =
+  | Foo
   | Subdomain(string);
 
 type account = {subdomain: option(subdomain)};
@@ -24,6 +25,17 @@ type context = {
   account: option(account),
   location,
   ticketId: int
+};
+
+type requestOptions = {
+  url: Utils.url,
+  secure: bool,
+  _type: Utils.requestMethod
+};
+
+type hashbackStatus = {
+  hasOauthToken: bool,
+  subdomain: option(subdomain)
 };
 
 module Decode = {
@@ -63,6 +75,11 @@ module Decode = {
       location: json |> field("location", string) |> location,
       ticketId: json |> field("ticketId", int)
     };
+  let hashbackStatus = json =>
+    Json.Decode.{
+      hasOauthToken: json |> field("hasOauthToken", bool),
+      subdomain: json |> optional(field("subdomain", string)) |> subdomain
+    };
 };
 
 type zafClient;
@@ -78,9 +95,9 @@ external request :
     zafClient,
     {
       .
-      url: Utils.url,
-      secure: bool,
-      type_: Utils.requestMethod
+      "url": string,
+      "secure": Js.boolean,
+      "_type": string
     }
   ) =>
   Js.Promise.t(Js.Json.t) =
@@ -91,9 +108,24 @@ external on_app_registered :
   (zafClient, [@bs.as "app.registered"] _, unit => unit) => unit =
   "on";
 
-let getContext = zafClient =>
+let onAppRegistered = callback => on_app_registered(init(), callback);
+
+let makeRequest = ({url, secure, _type}) =>
+  request(
+    init(),
+    Utils.(
+      {
+        "url": urlToString(url),
+        "secure": Js.Boolean.to_js_boolean(secure),
+        "_type": requestMethodToJs(_type)
+      }
+    )
+  );
+
+let getContext = () =>
   Js.Promise.(
-    requestContext(zafClient)
+    init()
+    |> requestContext
     |> then_(json => json |> Decode.context |> resolve)
   );
 
@@ -109,17 +141,32 @@ let accountLens =
 let subdomainLens =
   Rationale.Lens.(
     make(
-      account => account.subdomain,
+      (account: account) => account.subdomain,
       (subdomain, account) => {...account, subdomain}
     )
   );
 
-let getSubdomain = zafClient =>
+let getSubdomain = () =>
   Js.Promise.(
-    getContext(zafClient)
+    getContext()
     |> then_(context =>
          context
          |> Rationale.Lens.(view(accountLens >>- subdomainLens))
          |> resolve
        )
+  );
+
+let getHashbackStatus = () =>
+  Js.Promise.(
+    makeRequest(
+      Utils.{
+        url:
+          Url(
+            "https://api.hashback.io/feedback/zendesk/status?token={{setting.token}}"
+          ),
+        secure: true,
+        _type: `Get
+      }
+    )
+    |> then_(json => json |> Decode.hashbackStatus |> resolve)
   );
