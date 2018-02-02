@@ -6,18 +6,6 @@
   <link rel="manifest" href="%PUBLIC_URL%/app-manifest.json">
   <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
   <link rel="stylesheet" href="https://assets.zendesk.com/apps/sdk-assets/css/2/zendesk_garden.css" type="text/css">
-  <style>
-  body {
-    margin: 10px;
-    padding: 10px;
-  }
-  .hidden {
-    display: none;
-  }
-  .my-20 {
-    margin: 20px 0;
-  }
-  </style>
   <title>Hashback Zendesk Integration</title>
 </head>
 <body>
@@ -51,48 +39,6 @@
     </div>
   </section>
   <script>
-    // Initialise the Zendesk JavaScript API client
-    // https://developer.zendesk.com/apps/docs/apps-v2
-    var client = ZAFClient.init();
-
-    function getClassNameRegExp(className) {
-      return new RegExp('(?:^|\s)' + className + '(?!\S)', 'g');
-    }
-
-    function isClassNameApplied(className, el) {
-      return Boolean(el.className.match(getClassNameRegExp(className)));
-    }
-
-    function removeClassName(className, el) {
-      el.className = el.className.replace(getClassNameRegExp(className), '');
-      return el;
-    }
-
-    function addClassName(className, el) {
-      if (!isClassNameApplied(className, el)) {
-        el.className += ' ' + className;
-      }
-
-      return el;
-    }
-
-    function getSubdomain() {
-      return client.context()
-        .then(function(context) {
-          return context && context.account && context.account.subdomain
-            ? context.account.subdomain
-            : Promise.reject()
-        });
-    }
-
-    function getHashbackStatus() {
-      return client.request({
-        url: 'https://api.hashback.io/feedback/zendesk/status?token={{setting.token}}',
-        secure: true,
-        type: 'GET'
-      })
-    }
-
     function getIsCorrectlyConfigured() {
       return Promise.all([getHashbackStatus(), getSubdomain()])
         .then(function(statusAndSubdomain) {

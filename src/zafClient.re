@@ -142,7 +142,7 @@ let subdomainLens =
   Rationale.Lens.(
     make(
       (account: account) => account.subdomain,
-      (subdomain, account) => {...account, subdomain}
+      (subdomain, _) => {subdomain: subdomain}
     )
   );
 
