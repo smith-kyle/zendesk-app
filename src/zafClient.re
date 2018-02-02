@@ -14,7 +14,6 @@ type location =
   | UserSidebar;
 
 type subdomain =
-  | Foo
   | Subdomain(string);
 
 type account = {subdomain: option(subdomain)};
