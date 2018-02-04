@@ -10,6 +10,7 @@
     "react-dom": "^16.2.0",
     "reason-scripts": "0.8.0"
   },
+  "license": "MIT",
   "homepage": "./",
   "name": "hashback-zendesk-app",
   "private": false,
