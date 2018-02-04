@@ -18,6 +18,7 @@
     "build": "react-scripts build && rm -rf app/assets/static && mv build/* app/assets",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
+    "package": "(cd app; zat package)",
     "prepare": "npm link bs-platform"
   },
   "version": "0.1.0"
