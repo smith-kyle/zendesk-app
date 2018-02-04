@@ -1,0 +1,27 @@
+{
+  "author": {
+    "email": "dev@hashback.io",
+    "name": "Hashback",
+    "url": "https://www.hashback.io"
+  },
+  "defaultLocale": "en",
+  "domainWhitelist": ["api.hashback.io", "staging-api.hashback.io"],
+  "frameworkVersion": "2.0",
+  "name": "Hashback",
+  "location": {
+    "support": {
+      "nav_bar": "assets/index.html"
+    }
+  },
+  "parameters": [
+    {
+      "name": "token",
+      "required": false,
+      "secure": true,
+      "type": "hidden"
+    }
+  ],
+  "private": false,
+  "singleInstall": true,
+  "version": "1.0"
+}

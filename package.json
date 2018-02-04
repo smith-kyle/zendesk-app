@@ -10,11 +10,12 @@
     "react-dom": "^16.2.0",
     "reason-scripts": "0.8.0"
   },
+  "homepage": "./",
   "name": "hashback-zendesk-app",
   "private": false,
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && rm -rf app/assets/static && mv build/* app/assets",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "prepare": "npm link bs-platform"

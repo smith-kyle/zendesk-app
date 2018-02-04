@@ -1,27 +1,15 @@
 {
-  "author": {
-    "email": "dev@hashback.io",
-    "name": "Hashback",
-    "url": "https://www.hashback.io"
-  },
-  "defaultLocale": "en",
-  "domainWhitelist": ["api.hashback.io", "staging-api.hashback.io"],
-  "frameworkVersion": "2.0",
-  "name": "Hashback",
-  "location": {
-    "support": {
-      "nav_bar": "index.html"
-    }
-  },
-  "parameters": [
+  "short_name": "Hashback.io",
+  "name": "Hashback.io",
+  "icons": [
     {
-      "name": "token",
-      "required": false,
-      "secure": true,
-      "type": "hidden"
+      "src": "favicon.ico",
+      "sizes": "192x192",
+      "type": "image/png"
     }
   ],
-  "private": false,
-  "singleInstall": true,
-  "version": "1.0"
+  "start_url": "./index.html",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
 }
