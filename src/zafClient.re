@@ -107,11 +107,14 @@ external on_app_registered :
   (zafClient, [@bs.as "app.registered"] _, unit => unit) => unit =
   "on";
 
-let onAppRegistered = callback => on_app_registered(init(), callback);
+let zafClientInstance = init();
+
+let onAppRegistered = callback =>
+  on_app_registered(zafClientInstance, callback);
 
 let makeRequest = ({url, secure, _type}) =>
   request(
-    init(),
+    zafClientInstance,
     Utils.(
       {
         "url": urlToString(url),
@@ -123,7 +126,7 @@ let makeRequest = ({url, secure, _type}) =>
 
 let getContext = () =>
   Js.Promise.(
-    init()
+    zafClientInstance
     |> requestContext
     |> then_(json => json |> Decode.context |> resolve)
   );
