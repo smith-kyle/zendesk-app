@@ -23,7 +23,7 @@ type context = {
   product,
   account: option(account),
   location,
-  ticketId: int
+  ticketId: option(int)
 };
 
 type requestOptions = {
@@ -72,7 +72,7 @@ module Decode = {
       product: json |> field("product", string) |> product,
       account: json |> optional(field("account", account)),
       location: json |> field("location", string) |> location,
-      ticketId: json |> field("ticketId", int)
+      ticketId: json |> optional(field("ticketId", int))
     };
   let hashbackStatus = json =>
     Json.Decode.{
