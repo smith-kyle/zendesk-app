@@ -56,6 +56,10 @@ let hashbackRequiresConfiguration = self =>
     </div>
   </div>;
 
+let navigateToExternalPage: string => unit = [%bs.raw
+  {| function (url) { window.location.href = url; } |}
+];
+
 let make = _children => {
   ...component,
   initialState: () => initialState,
@@ -72,7 +76,7 @@ let make = _children => {
           ({state}) =>
             switch state {
             | {subdomainOnZendesk: Some(ZafClient.Subdomain(subdomain))} =>
-              ReasonReact.Router.push(
+              navigateToExternalPage(
                 "https://app.hashback.io/settings/integrate/zendesk/"
                 ++ subdomain
               )
