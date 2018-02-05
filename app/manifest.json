@@ -10,7 +10,7 @@
   "name": "Hashback",
   "location": {
     "support": {
-      "nav_bar": "assets/iframe.html"
+      "nav_bar": "assets/index.html"
     }
   },
   "parameters": [

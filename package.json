@@ -1,0 +1,26 @@
+{
+  "devDependencies": {
+    "bs-jest": "^0.3.2",
+    "reason-react": "^0.3.1"
+  },
+  "dependencies": {
+    "@glennsl/bs-json": "^1.1.2",
+    "rationale": "^0.1.3",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "reason-scripts": "0.8.0"
+  },
+  "license": "MIT",
+  "homepage": "./",
+  "name": "hashback-zendesk-app",
+  "private": false,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build && rm -rf app/assets/static && mv build/* app/assets",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "package": "(cd app; zat package)",
+    "prepare": "npm link bs-platform"
+  },
+  "version": "0.1.0"
+}
