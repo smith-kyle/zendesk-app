@@ -7,14 +7,16 @@ type action =
       bool,
       option(ZafClient.subdomain),
       option(ZafClient.subdomain)
-    );
+    )
+  | UpdateErrorTimeoutId(option(Js.Global.timeoutId));
 
 type state = {
   error: option(Js.Promise.error),
   isLoading: bool,
   hasOauthToken: bool,
   subdomainOnHashback: option(ZafClient.subdomain),
-  subdomainOnZendesk: option(ZafClient.subdomain)
+  subdomainOnZendesk: option(ZafClient.subdomain),
+  errorTimeoutId: option(Js.Global.timeoutId)
 };
 
 let initialState = {
@@ -22,7 +24,8 @@ let initialState = {
   isLoading: true,
   hasOauthToken: false,
   subdomainOnHashback: None,
-  subdomainOnZendesk: None
+  subdomainOnZendesk: None,
+  errorTimeoutId: None
 };
 
 let component = ReasonReact.reducerComponent("App");
@@ -67,6 +70,17 @@ let hashbackRequiresConfiguration = self =>
 let navigateToExternalPage: string => unit = [%bs.raw
   {| function (url) { window.location.href = url; } |}
 ];
+
+external castToJson : Js.Promise.error => Js.Json.t = "%identity";
+
+let parseErrorMessage = error =>
+  Json.Decode.(error |> castToJson |> optional(field("responseText", string)));
+
+let getServerErrorResponse = error =>
+  switch (parseErrorMessage(error)) {
+  | Some(responseText) => responseText
+  | None => "Unknown server error."
+  };
 
 let make = _children => {
   ...component,
@@ -114,8 +128,9 @@ let make = _children => {
                  )
               |> catch(error => {
                    self.send(UpdateData(Some(error), false, None, None));
-                   Js.log2("Error", error);
-                   /* Js.Global.setTimeout(() => self.send(ClearError), 5000); */
+                   Js.log("Error: " ++ getServerErrorResponse(error));
+                   Js.Global.setTimeout(() => self.send(ClearError), 5000)
+                   |> (id => self.send(UpdateErrorTimeoutId(Some(id))));
                    resolve();
                  })
               |> ignore
@@ -124,12 +139,15 @@ let make = _children => {
       )
     | UpdateData(error, hasOauthToken, subdomainOnHashback, subdomainOnZendesk) =>
       ReasonReact.Update({
+        ...state,
         error,
         isLoading: false,
         hasOauthToken,
         subdomainOnHashback,
         subdomainOnZendesk
       })
+    | UpdateErrorTimeoutId(errorTimeoutId) =>
+      ReasonReact.Update({...state, errorTimeoutId})
     },
   render: ({state} as self) =>
     <div className="hashback-app">
@@ -137,8 +155,23 @@ let make = _children => {
         switch state {
         | {isLoading: true} =>
           <section> (ReasonReact.stringToElement("Loading...")) </section>
-        /* | {error: Some(error)} =>
-           <section> (ReasonReact.stringToElement(error)) </section> */
+        | {error: Some(error)} =>
+          <section>
+            <div>
+              (
+                ReasonReact.stringToElement(
+                  "There was an error when checking account status. Please try again..."
+                )
+              )
+            </div>
+            <div>
+              (
+                ReasonReact.stringToElement(
+                  "Server error: " ++ getServerErrorResponse(error)
+                )
+              )
+            </div>
+          </section>
         | {
             isLoading: false,
             hasOauthToken: true,
