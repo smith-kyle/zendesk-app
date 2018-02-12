@@ -1,9 +1,16 @@
 type action =
+  | ClearError
   | ConfigureHashbackForSubdomain
   | LoadInitialData
-  | UpdateData(bool, option(ZafClient.subdomain), option(ZafClient.subdomain));
+  | UpdateData(
+      option(Js.Promise.error),
+      bool,
+      option(ZafClient.subdomain),
+      option(ZafClient.subdomain)
+    );
 
 type state = {
+  error: option(Js.Promise.error),
   isLoading: bool,
   hasOauthToken: bool,
   subdomainOnHashback: option(ZafClient.subdomain),
@@ -11,6 +18,7 @@ type state = {
 };
 
 let initialState = {
+  error: None,
   isLoading: true,
   hasOauthToken: false,
   subdomainOnHashback: None,
@@ -68,8 +76,9 @@ let make = _children => {
       state,
       ({send}) => ZafClient.onAppRegistered(() => send(LoadInitialData))
     ),
-  reducer: (action, _) =>
+  reducer: (action, state) =>
     switch action {
+    | ClearError => ReasonReact.Update({...state, error: None})
     | ConfigureHashbackForSubdomain =>
       ReasonReact.SideEffects(
         (
@@ -94,16 +103,28 @@ let make = _children => {
               |> then_(
                    ((subdomainOnZendesk, {ZafClient.hasOauthToken, subdomain})) =>
                    self.send(
-                     UpdateData(hasOauthToken, subdomain, subdomainOnZendesk)
+                     UpdateData(
+                       None,
+                       hasOauthToken,
+                       subdomain,
+                       subdomainOnZendesk
+                     )
                    )
                    |> resolve
                  )
+              |> catch(error => {
+                   self.send(UpdateData(Some(error), false, None, None));
+                   Js.log2("Error", error);
+                   /* Js.Global.setTimeout(() => self.send(ClearError), 5000); */
+                   resolve();
+                 })
               |> ignore
             )
         )
       )
-    | UpdateData(hasOauthToken, subdomainOnHashback, subdomainOnZendesk) =>
+    | UpdateData(error, hasOauthToken, subdomainOnHashback, subdomainOnZendesk) =>
       ReasonReact.Update({
+        error,
         isLoading: false,
         hasOauthToken,
         subdomainOnHashback,
@@ -116,6 +137,8 @@ let make = _children => {
         switch state {
         | {isLoading: true} =>
           <section> (ReasonReact.stringToElement("Loading...")) </section>
+        /* | {error: Some(error)} =>
+           <section> (ReasonReact.stringToElement(error)) </section> */
         | {
             isLoading: false,
             hasOauthToken: true,
